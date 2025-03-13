@@ -28,4 +28,14 @@ func main() {
 		fmt.Println("Ex: -m <filepath.dt>")
 		return
 	}
+	if *utils.OutputPtr == "" {
+		fmt.Println("Please provide an output file")
+		fmt.Println("Ex: -o <filepath.dt> for training or -o <filepath.csv> for prediction")
+		return
+	}
+	err := utils.FileExtValidation()
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
 }
