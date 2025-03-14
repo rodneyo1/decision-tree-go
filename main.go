@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"decision-tree/algorithm"
 	"decision-tree/utils"
 )
 
@@ -57,6 +58,18 @@ func runTraining() error {
 	if err := utils.LoadTrainingData(); err != nil {
 		return fmt.Errorf("failed to load training data: %w", err)
 	}
+	// Build the decision tree
+	tree, err := algorithm.BuildTree(*utils.ColumnPtr)
+	if err != nil {
+		return fmt.Errorf("failed to build decision tree: %w", err)
+	}
+
+	// Save the model
+	if err := utils.SaveModel(tree); err != nil {
+		return fmt.Errorf("failed to save model: %w", err)
+	}
+
+	fmt.Println("Training completed successfully!")
 	return nil
 }
 
