@@ -41,9 +41,12 @@ func LoadTrainingData() error {
 		}
 	}
 
-	// Read and process data
+	// Initialize records and target values
 	models.Records = []map[string]interface{}{}
 	models.TargetValues = make(map[interface{}]int)
+
+	batchSize := 1000
+	batch := make([]map[string]interface{}, 0, batchSize)
 
 	for {
 		row, err := csvReader.Read()
@@ -80,7 +83,16 @@ func LoadTrainingData() error {
 			models.TargetValues[targetVal]++
 		}
 
-		models.Records = append(models.Records, record)
+		batch = append(batch, record)
+		if len(batch) == batchSize {
+			models.Records = append(models.Records, batch...)
+			batch = make([]map[string]interface{}, 0, batchSize)
+		}
+	}
+
+	// Append any remaining records
+	if len(batch) > 0 {
+		models.Records = append(models.Records, batch...)
 	}
 
 	if len(models.TargetValues) <= 10 || models.FeatureTypes[*ColumnPtr] == "categorical" {
