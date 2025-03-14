@@ -79,9 +79,44 @@ func FindBestSplit(indices []int, features []string, targetCol string) models.Sp
 
 		featureType := models.FeatureTypes[feature]
 		if featureType == "categorical" {
-		
+		}
 	}
 
 	return bestSplit
 }
 
+// Find the best split for a categorical feature
+func findCategoricalSplit(indices []int, feature string, targetCol string, baseEntropy float64) models.SplitCriteria {
+	// Group indices by feature value
+	valueIndices := make(map[string][]int)
+	for _, idx := range indices {
+		value := models.Records[idx][feature]
+		key := models.GetValueKey(value)
+		valueIndices[key] = append(valueIndices[key], idx)
+	}
+
+	// Calculate weighted entropy
+	weightedEntropy := 0.0
+	splitInfo := 0.0
+
+	for _, subIndices := range valueIndices {
+		prob := float64(len(subIndices)) / float64(len(indices))
+		weightedEntropy += prob * CalculateEntropy(subIndices, targetCol)
+		splitInfo -= prob * math.Log2(prob)
+	}
+
+	// Calculate information gain and gain ratio
+	infoGain := baseEntropy - weightedEntropy
+	gainRatio := 0.0
+	if splitInfo > 0 {
+		gainRatio = infoGain / splitInfo
+	}
+
+	return models.SplitCriteria{
+		Feature:      feature,
+		SplitType:    "categorical",
+		InfoGain:     infoGain,
+		GainRatio:    gainRatio,
+		SplitIndices: valueIndices,
+	}
+}
