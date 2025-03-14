@@ -76,4 +76,40 @@ func predictRecord(record map[string]interface{}, node *models.TreeNode) interfa
 			return node.Prediction
 		}
 	}
+	// Split based on feature type
+	if node.SplitType == "categorical" {
+		// For categorical features, find the matching child
+		valueKey := models.GetValueKey(featureValue)
+		if child, ok := node.Children[valueKey]; ok {
+			return predictRecord(record, child)
+		}
+
+		// If no matching child, use the most common child
+		var bestChild *models.TreeNode
+		maxSamples := -1
+
+		for _, child := range node.Children {
+			if bestChild == nil || estimateNodeSize(child) > maxSamples {
+				bestChild = child
+				maxSamples = estimateNodeSize(child)
+			}
+		}
+
+		if bestChild != nil {
+			return predictRecord(record, bestChild)
+		}
+		return node.Prediction
+	} else {
+		// For numerical features, compare with the threshold
+		if models.CompareValues(featureValue, node.SplitValue) < 0 {
+			if node.Left != nil {
+				return predictRecord(record, node.Left)
+			}
+		} else {
+			if node.Right != nil {
+				return predictRecord(record, node.Right)
+			}
+		}
+		return node.Prediction
+	}
 }
