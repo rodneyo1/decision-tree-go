@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"decision-tree/models"
+	"dt/models"
 )
 
 func SaveModel(tree *models.TreeNode) error {

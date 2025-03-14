@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"decision-tree/algorithm"
-	"decision-tree/utils"
+	"dt/algorithm"
+	"dt/utils"
 )
 
 func main() {

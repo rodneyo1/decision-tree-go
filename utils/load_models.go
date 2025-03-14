@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"decision-tree/models"
+	"dt/models"
 )
 
 func LoadModels() (*models.ModelData, error) {

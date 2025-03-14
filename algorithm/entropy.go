@@ -4,7 +4,7 @@ import (
 	"math"
 	"sort"
 
-	"decision-tree/models"
+	"dt/models"
 )
 
 // Calculate entropy of a set of indices

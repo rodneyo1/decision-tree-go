@@ -3,7 +3,7 @@ package algorithm
 import (
 	"sync"
 
-	"decision-tree/models"
+	"dt/models"
 )
 
 // Predict makes predictions for all records in the dataset

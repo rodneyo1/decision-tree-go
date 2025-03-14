@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"decision-tree/models"
+	"dt/models"
 	"encoding/csv"
 	"fmt"
 	"io"

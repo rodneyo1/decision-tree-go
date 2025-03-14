@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 
-	"decision-tree/models"
+	"dt/models"
 )
 
 func LoadPredictionData() error {

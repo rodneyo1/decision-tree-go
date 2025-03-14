@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sync"
 
-	"decision-tree/models"
+	"dt/models"
 )
 
 const (
