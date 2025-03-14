@@ -1,7 +1,9 @@
+
 package algorithm
 
 import (
 	"fmt"
+	"sync"
 
 	"decision-tree/models"
 )
@@ -12,6 +14,7 @@ const (
 	MinInfoGain    = 0.001 // Minimum information gain required to split
 )
 
+// BuildTree builds a decision tree from the given dataset
 func BuildTree(targetCol string) (*models.TreeNode, error) {
 	fmt.Println("Building decision tree for target:", targetCol)
 
@@ -117,5 +120,6 @@ func buildTreeNode(indices []int, features []string, targetCol string, depth int
 			node.Right = nil
 		}
 	}
+	return node
 
 }
