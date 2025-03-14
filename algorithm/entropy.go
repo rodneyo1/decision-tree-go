@@ -80,6 +80,15 @@ func FindBestSplit(indices []int, features []string, targetCol string) models.Sp
 
 		featureType := models.FeatureTypes[feature]
 		if featureType == "categorical" {
+			split := findCategoricalSplit(indices, feature, targetCol, baseEntropy)
+			if split.GainRatio > bestSplit.GainRatio {
+				bestSplit = split
+			}
+		} else {
+			split := findNumericalSplit(indices, feature, targetCol, baseEntropy)
+			if split.GainRatio > bestSplit.GainRatio {
+				bestSplit = split
+			}
 		}
 	}
 

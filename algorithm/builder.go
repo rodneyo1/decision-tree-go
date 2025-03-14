@@ -45,4 +45,16 @@ func buildTreeNode(indices []int, features []string, targetCol string, depth int
 			Prediction: prediction,
 		}
 	}
+
+	bestSplit := FindBestSplit(indices, features, targetCol)
+
+	// If no good split is found, create a leaf node
+	if bestSplit.GainRatio < MinInfoGain {
+		prediction := MostCommonTarget(indices, targetCol)
+		return &models.TreeNode{
+			IsLeaf:     true,
+			Prediction: prediction,
+		}
+	}
+
 }
