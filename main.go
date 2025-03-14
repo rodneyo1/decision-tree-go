@@ -76,5 +76,14 @@ func runTraining() error {
 // runPrediction handles the prediction workflow
 func runPrediction() error {
 	fmt.Println("Starting prediction process...")
+
+	// Load the model
+	modelData, err := utils.LoadModels()
+	if err != nil {
+		return fmt.Errorf("failed to load model: %w", err)
+	}
+	if err := utils.LoadPredictionData(); err != nil {
+		return fmt.Errorf("failed to load prediction data: %w", err)
+	}
 	return nil
 }
