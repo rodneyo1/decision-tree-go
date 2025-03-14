@@ -9,3 +9,14 @@ var (
 
 
 )
+
+type TreeNode struct {
+	IsLeaf     bool                 `json:"is_leaf"`
+	Prediction interface{}          `json:"prediction,omitempty"`
+	Feature    string               `json:"feature,omitempty"`
+	SplitValue interface{}          `json:"split_value,omitempty"`
+	SplitType  string               `json:"split_type,omitempty"` // "categorical" or "numerical"
+	Children   map[string]*TreeNode `json:"children,omitempty"`   // For categorical features
+	Left       *TreeNode            `json:"left,omitempty"`       // For numerical features (< threshold)
+	Right      *TreeNode            `json:"right,omitempty"`      // For numerical features (>= threshold)
+}
