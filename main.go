@@ -54,6 +54,9 @@ func main() {
 // runTraining handles the training workflow
 func runTraining() error {
 	fmt.Println("Starting training process...")
+	if err := utils.LoadTrainingData(); err != nil {
+		return fmt.Errorf("failed to load training data: %w", err)
+	}
 	return nil
 }
 
