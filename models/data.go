@@ -42,6 +42,15 @@ type SplitCriteria struct {
 	RightIndices []int            // For numerical splits (>=)
 }
 
+// ModelData represents the serializable model structure
+type ModelData struct {
+	Tree         *TreeNode         `json:"tree"`
+	FeatureTypes map[string]string `json:"feature_types"`
+	TargetColumn string            `json:"target_column"`
+	TargetType   string            `json:"target_type"`
+	Columns      []string          `json:"columns"`
+}
+
 // CompareValues compares two values based on their types
 func CompareValues(a, b interface{}) int {
 	// Handle nil values
