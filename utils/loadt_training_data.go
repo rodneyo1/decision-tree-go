@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"dt/models"
 	"encoding/csv"
 	"fmt"
 	"io"
@@ -9,6 +8,8 @@ import (
 	"slices"
 	"strconv"
 	"time"
+
+	"dt/models"
 )
 
 func LoadTrainingData() error {
@@ -95,10 +96,10 @@ func LoadTrainingData() error {
 		models.Records = append(models.Records, batch...)
 	}
 
-	if len(models.TargetValues) <= 10 || models.FeatureTypes[*ColumnPtr] == "categorical" {
-		models.TargetType = "categorical"
-	} else {
+	if models.FeatureTypes[*ColumnPtr] == "numeric" {
 		models.TargetType = "numeric"
+	} else {
+		models.TargetType = "categorical"
 	}
 
 	fmt.Printf("Loaded %d records with %d columns\n", len(models.Records), len(columns))
