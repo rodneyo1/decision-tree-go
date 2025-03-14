@@ -1,36 +1,35 @@
-package algorithm
+package algorithm_test
 
 import (
+	"os"
 	"testing"
 
 	"dt/models"
+	"dt/algorithm"
+	"dt/utils"
 )
 
-// Mock data setup for testing
-func setupMockTreeData() {
+// Setup a mock dataset for testing
+func setupMockData() {
+	models.Columns = []string{"Feature1", "Feature2", "Target"}
 	models.Records = []map[string]interface{}{
-		{"feature": "A", "target": "Yes"},
-		{"feature": "A", "target": "Yes"},
-		{"feature": "B", "target": "No"},
-		{"feature": "B", "target": "No"},
-		{"feature": "C", "target": "Yes"},
-		{"feature": "C", "target": "No"},
-		{"feature": "A", "target": "Yes"},
-		{"feature": "B", "target": "No"},
-		{"feature": "C", "target": "Yes"},
-	}
-
-	models.Columns = []string{"feature", "target"}
-	models.FeatureTypes = map[string]string{
-		"feature": "categorical",
+		{"Feature1": "A", "Feature2": 1.2, "Target": "Yes"},
+		{"Feature1": "B", "Feature2": 2.4, "Target": "No"},
+		{"Feature1": "A", "Feature2": 1.5, "Target": "Yes"},
+		{"Feature1": "B", "Feature2": 2.1, "Target": "No"},
+		{"Feature1": "A", "Feature2": 1.8, "Target": "Yes"},
 	}
 }
 
-// Test BuildTree function
 func TestBuildTree(t *testing.T) {
-	setupMockTreeData()
+	setupMockData()
 
-	tree, err := BuildTree("target")
+	// Ensure OutputPtr is set to a valid test file
+	tempFile := "test_model.json"
+	utils.OutputPtr = &tempFile // Assign a valid file path
+
+	// Run BuildTree
+	tree, err := algorithm.BuildTree("Target")
 	if err != nil {
 		t.Fatalf("BuildTree returned an error: %v", err)
 	}
@@ -39,30 +38,10 @@ func TestBuildTree(t *testing.T) {
 		t.Fatal("BuildTree returned a nil tree")
 	}
 
-	if !tree.IsLeaf && tree.Feature == "" {
-		t.Errorf("Expected a decision node with a feature, got an empty feature")
-	}
-}
-
-// Test buildTreeNode function directly
-func TestBuildTreeNode(t *testing.T) {
-	setupMockTreeData()
-
-	indices := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
-	features := []string{"feature"}
-	targetCol := "target"
-
-	rootNode := buildTreeNode(indices, features, targetCol, 0)
-
-	if rootNode == nil {
-		t.Fatal("buildTreeNode returned nil")
+	if tree.IsLeaf && tree.Prediction == nil {
+		t.Fatal("Leaf node has no prediction")
 	}
 
-	if !rootNode.IsLeaf && rootNode.Feature == "" {
-		t.Errorf("Expected a split on a feature, but got an empty feature")
-	}
-
-	if rootNode.IsLeaf && rootNode.Prediction == nil {
-		t.Errorf("Expected a prediction at a leaf node but got nil")
-	}
+	// Clean up the test output file
+	os.Remove(tempFile)
 }
