@@ -88,5 +88,11 @@ func runPrediction() error {
 
 	// Make predictions
 	predictions := algorithm.Predict(modelData.Tree)
+	// Save predictions
+	if err := utils.SavePredictions(predictions); err != nil {
+		return fmt.Errorf("failed to save predictions: %w", err)
+	}
+
+	fmt.Println("Prediction completed successfully!")
 	return nil
 }
