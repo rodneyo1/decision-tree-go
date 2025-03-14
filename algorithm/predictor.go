@@ -113,3 +113,27 @@ func predictRecord(record map[string]interface{}, node *models.TreeNode) interfa
 		return node.Prediction
 	}
 }
+
+// estimateNodeSize estimates the number of samples in a node
+func estimateNodeSize(node *models.TreeNode) int {
+	if node == nil {
+		return 0
+	}
+
+	if node.IsLeaf {
+		return 1
+	}
+
+	size := 0
+	if node.SplitType == "categorical" {
+		for _, child := range node.Children {
+			size += estimateNodeSize(child)
+		}
+	} else {
+		// For numerical splits
+		size += estimateNodeSize(node.Left)
+		size += estimateNodeSize(node.Right)
+	}
+
+	return size
+}
