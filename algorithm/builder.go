@@ -65,4 +65,57 @@ func buildTreeNode(indices []int, features []string, targetCol string, depth int
 		SplitValue: bestSplit.SplitValue,
 	}
 
+	// Split based on feature type
+	if bestSplit.SplitType == "categorical" {
+		// For categorical features, create a child for each value
+		node.Children = make(map[string]*models.TreeNode)
+
+		var wg sync.WaitGroup
+		var mutex sync.Mutex
+
+		for value, subIndices := range bestSplit.SplitIndices {
+			if len(subIndices) == 0 {
+				continue
+			}
+
+			wg.Add(1)
+			go func(value string, subIndices []int) {
+				defer wg.Done()
+				childNode := buildTreeNode(subIndices, features, targetCol, depth+1)
+
+				mutex.Lock()
+				node.Children[value] = childNode
+				mutex.Unlock()
+			}(value, subIndices)
+		}
+
+		wg.Wait()
+
+		// If no children were created, make it a leaf node
+		if len(node.Children) == 0 {
+			node.IsLeaf = true
+			node.Prediction = MostCommonTarget(indices, targetCol)
+			node.Children = nil
+		}
+	} else {
+		// For numerical features, create left and right children
+		if len(bestSplit.LeftIndices) > 0 {
+			node.Left = buildTreeNode(bestSplit.LeftIndices, features, targetCol, depth+1)
+		}
+
+		if len(bestSplit.RightIndices) > 0 {
+			node.Right = buildTreeNode(bestSplit.RightIndices, features, targetCol, depth+1)
+		}
+
+		// If both children are the same leaf, merge them
+		if node.Left != nil && node.Right != nil &&
+			node.Left.IsLeaf && node.Right.IsLeaf &&
+			fmt.Sprintf("%v", node.Left.Prediction) == fmt.Sprintf("%v", node.Right.Prediction) {
+			node.IsLeaf = true
+			node.Prediction = node.Left.Prediction
+			node.Left = nil
+			node.Right = nil
+		}
+	}
+
 }
