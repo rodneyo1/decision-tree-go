@@ -57,4 +57,12 @@ func buildTreeNode(indices []int, features []string, targetCol string, depth int
 		}
 	}
 
+	// Create a decision node
+	node := &models.TreeNode{
+		IsLeaf:     false,
+		Feature:    bestSplit.Feature,
+		SplitType:  bestSplit.SplitType,
+		SplitValue: bestSplit.SplitValue,
+	}
+
 }
