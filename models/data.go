@@ -142,3 +142,53 @@ func CompareValues(a, b interface{}) int {
 	}
 	return 0
 }
+
+// BinEdges stores bin edges for each numerical feature
+var BinEdges map[string][]float64
+
+// GetBinnedValue returns the binned value for a numerical feature
+func GetBinnedValue(feature string, value interface{}) interface{} {
+	if value == nil {
+		return nil
+	}
+	
+	// Skip binning for non-numerical features
+	if FeatureTypes[feature] != "numerical" {
+		return value
+	}
+	
+	// Check if binning is enabled for this feature
+	edges := BinEdges[feature]
+	if edges == nil {
+		return value // No binning for this feature
+	}
+	
+	var floatValue float64
+	switch v := value.(type) {
+	case int:
+		floatValue = float64(v)
+	case float64:
+		floatValue = v
+	default:
+		return value // Cannot bin this value type
+	}
+	
+	// Find the bin
+	for i := 0; i < len(edges)-1; i++ {
+		if floatValue >= edges[i] && floatValue < edges[i+1] {
+			// Return the bin index or the bin midpoint
+			// Option 1: Return bin index as string
+			// return fmt.Sprintf("bin_%d", i)
+			
+			// Option 2: Return midpoint of the bin
+			return (edges[i] + edges[i+1]) / 2
+		}
+	}
+	
+	// Handle edge case: value equals the maximum edge
+	if floatValue == edges[len(edges)-1] {
+		return (edges[len(edges)-2] + edges[len(edges)-1]) / 2
+	}
+	
+	return value // Value outside bin ranges
+}
