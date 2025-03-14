@@ -45,6 +45,11 @@ func predictRecord(record map[string]interface{}, node *models.TreeNode) interfa
 	// Get the feature value
 	featureValue := record[node.Feature]
 
+	// Apply binning if needed
+	if node.SplitType == "binned_numerical" {
+		featureValue = models.GetBinnedValue(node.Feature, featureValue)
+	}
+
 	// Handle missing values (null) by going to the majority branch
 	if featureValue == nil {
 		if node.SplitType == "categorical" {

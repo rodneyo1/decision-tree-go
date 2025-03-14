@@ -131,8 +131,50 @@ func findCategoricalSplit(indices []int, feature string, targetCol string, baseE
 	}
 }
 
+func findBinnedNumericalSplit(indices []int, feature string, targetCol string, baseEntropy float64) models.SplitCriteria {
+	// Group indices by binned feature value
+	valueIndices := make(map[string][]int)
+	
+	for _, idx := range indices {
+		rawValue := models.Records[idx][feature]
+		binValue := models.GetBinnedValue(feature, rawValue)
+		key := models.GetValueKey(binValue)
+		valueIndices[key] = append(valueIndices[key], idx)
+	}
+	
+	// Calculate weighted entropy
+	weightedEntropy := 0.0
+	splitInfo := 0.0
+	
+	for _, subIndices := range valueIndices {
+		prob := float64(len(subIndices)) / float64(len(indices))
+		weightedEntropy += prob * CalculateEntropy(subIndices, targetCol)
+		splitInfo -= prob * math.Log2(prob)
+	}
+	
+	// Calculate information gain and gain ratio
+	infoGain := baseEntropy - weightedEntropy
+	gainRatio := 0.0
+	if splitInfo > 0 {
+		gainRatio = infoGain / splitInfo
+	}
+	
+	return models.SplitCriteria{
+		Feature:      feature,
+		SplitType:    "binned_numerical",
+		InfoGain:     infoGain,
+		GainRatio:    gainRatio,
+		SplitIndices: valueIndices,
+	}
+}
+
 // Find the best split for a numerical feature
 func findNumericalSplit(indices []int, feature string, targetCol string, baseEntropy float64) models.SplitCriteria {
+		// If binning is enabled for this feature, treat it as categorical
+		if _, ok := models.BinEdges[feature]; ok {
+			return findBinnedNumericalSplit(indices, feature, targetCol, baseEntropy)
+		}	
+	
 	// Collect unique values
 	values := make([]interface{}, 0)
 	valuesMap := make(map[string]bool)

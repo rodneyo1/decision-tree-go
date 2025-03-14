@@ -1,0 +1,159 @@
+{
+  "tree": {
+    "is_leaf": false,
+    "feature": "film",
+    "split_type": "categorical",
+    "children": {
+      "A Bug's Life": {
+        "is_leaf": true,
+        "prediction": 363258859
+      },
+      "Brave": {
+        "is_leaf": true,
+        "prediction": 538983207
+      },
+      "Cars": {
+        "is_leaf": true,
+        "prediction": 461983149
+      },
+      "Cars 2": {
+        "is_leaf": true,
+        "prediction": 559852396
+      },
+      "Cars 3": {
+        "is_leaf": true,
+        "prediction": 383930656
+      },
+      "Coco": {
+        "is_leaf": true,
+        "prediction": 814641172
+      },
+      "Elemental": {
+        "is_leaf": true,
+        "prediction": 496444308
+      },
+      "Finding Dory": {
+        "is_leaf": true,
+        "prediction": 1028570889
+      },
+      "Finding Nemo": {
+        "is_leaf": true,
+        "prediction": 871014978
+      },
+      "Incredibles 2": {
+        "is_leaf": true,
+        "prediction": 1242805359
+      },
+      "Inside Out": {
+        "is_leaf": true,
+        "prediction": 857611174
+      },
+      "Inside Out 2": {
+        "is_leaf": true,
+        "prediction": 1698030965
+      },
+      "Lightyear": {
+        "is_leaf": true,
+        "prediction": 226425420
+      },
+      "Luca": {
+        "is_leaf": true,
+        "prediction": 51112314
+      },
+      "Monsters University": {
+        "is_leaf": true,
+        "prediction": 743559607
+      },
+      "Monsters, Inc.": {
+        "is_leaf": true,
+        "prediction": 528773250
+      },
+      "Onward": {
+        "is_leaf": true,
+        "prediction": 141940042
+      },
+      "Ratatouille": {
+        "is_leaf": true,
+        "prediction": 623726085
+      },
+      "Soul": {
+        "is_leaf": true,
+        "prediction": 121903885
+      },
+      "The Good Dinosaur": {
+        "is_leaf": true,
+        "prediction": 332207671
+      },
+      "The Incredibles": {
+        "is_leaf": true,
+        "prediction": 631442092
+      },
+      "Toy Story": {
+        "is_leaf": true,
+        "prediction": 394436586
+      },
+      "Toy Story 2": {
+        "is_leaf": true,
+        "prediction": 511358276
+      },
+      "Toy Story 3": {
+        "is_leaf": true,
+        "prediction": 1066969703
+      },
+      "Toy Story 4": {
+        "is_leaf": true,
+        "prediction": 1073394593
+      },
+      "Turning Red": {
+        "is_leaf": true,
+        "prediction": 21813358
+      },
+      "Up": {
+        "is_leaf": true,
+        "prediction": 735099082
+      },
+      "WALL-E": {
+        "is_leaf": true,
+        "prediction": 521311860
+      }
+    }
+  },
+  "feature_types": {
+    "ID": "numeric",
+    "box_office_other": "numeric",
+    "box_office_us_canada": "numeric",
+    "box_office_worldwide": "numeric",
+    "budget": "numeric",
+    "cinema_score": "categorical",
+    "film": "categorical",
+    "film_rating": "categorical",
+    "imdb_counts": "numeric",
+    "imdb_score": "numeric",
+    "metacritic_counts": "numeric",
+    "metacritic_score": "numeric",
+    "release_date": "date",
+    "rotten_tomatoes_counts": "numeric",
+    "rotten_tomatoes_score": "numeric",
+    "run_time": "numeric"
+  },
+  "target_column": "box_office_worldwide",
+  "target_type": "numeric",
+  "columns": [
+    "ID",
+    "film",
+    "film_rating",
+    "cinema_score",
+    "release_date",
+    "run_time",
+    "budget",
+    "box_office_us_canada",
+    "box_office_other",
+    "box_office_worldwide",
+    "rotten_tomatoes_score",
+    "rotten_tomatoes_counts",
+    "metacritic_score",
+    "metacritic_counts",
+    "imdb_score",
+    "imdb_counts"
+  ]
+}

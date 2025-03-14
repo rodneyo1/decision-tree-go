@@ -52,25 +52,38 @@ func main() {
 	}
 }
 
-// runTraining handles the training workflow
 func runTraining() error {
-	fmt.Println("Starting training process...")
-	if err := utils.LoadTrainingData(); err != nil {
-		return fmt.Errorf("failed to load training data: %w", err)
-	}
-	// Build the decision tree
-	tree, err := algorithm.BuildTree(*utils.ColumnPtr)
-	if err != nil {
-		return fmt.Errorf("failed to build decision tree: %w", err)
-	}
+    fmt.Println("Starting training process...")
+    if err := utils.LoadTrainingData(); err != nil {
+        return fmt.Errorf("failed to load training data: %w", err)
+    }
+    
+    // Apply binning to numerical features if enabled
+    if *utils.BinningEnabledPtr {
+        fmt.Printf("Applying %s binning with %d bins...\n", *utils.BinningMethodPtr, *utils.NumBinsPtr)
+        
+        binningOpts := algorithm.BinningOptions{
+            Method:  *utils.BinningMethodPtr,
+            NumBins: *utils.NumBinsPtr,
+        }
+        if err := algorithm.ApplyBinning(binningOpts); err != nil {
+            return fmt.Errorf("failed to apply binning: %w", err)
+        }
+    }
+    
+    // Build the decision tree
+    tree, err := algorithm.BuildTree(*utils.ColumnPtr)
+    if err != nil {
+        return fmt.Errorf("failed to build decision tree: %w", err)
+    }
 
-	// Save the model
-	if err := utils.SaveModel(tree); err != nil {
-		return fmt.Errorf("failed to save model: %w", err)
-	}
+    // Save the model
+    if err := utils.SaveModel(tree); err != nil {
+        return fmt.Errorf("failed to save model: %w", err)
+    }
 
-	fmt.Println("Training completed successfully!")
-	return nil
+    fmt.Println("Training completed successfully!")
+    return nil
 }
 
 // runPrediction handles the prediction workflow
