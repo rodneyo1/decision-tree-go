@@ -85,5 +85,8 @@ func runPrediction() error {
 	if err := utils.LoadPredictionData(); err != nil {
 		return fmt.Errorf("failed to load prediction data: %w", err)
 	}
+
+	// Make predictions
+	predictions := algorithm.Predict(modelData.Tree)
 	return nil
 }
