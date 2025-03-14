@@ -34,4 +34,15 @@ func BuildTree(targetCol string) (*models.TreeNode, error) {
 }
 
 func buildTreeNode(indices []int, features []string, targetCol string, depth int) *models.TreeNode {
+	// Create a leaf node if:
+	// 1. Maximum depth reached
+	// 2. Not enough samples to split
+	// 3. All samples have the same target value
+	if depth >= MaxDepth || len(indices) <= MinSamplesLeaf || CalculateEntropy(indices, targetCol) == 0 {
+		prediction := MostCommonTarget(indices, targetCol)
+		return &models.TreeNode{
+			IsLeaf:     true,
+			Prediction: prediction,
+		}
+	}
 }
