@@ -1,4 +1,3 @@
-
 package algorithm
 
 import (
@@ -6,6 +5,7 @@ import (
 	"sync"
 
 	"dt/models"
+	"dt/utils"
 )
 
 const (
@@ -31,10 +31,32 @@ func BuildTree(targetCol string) (*models.TreeNode, error) {
 	for i := range indices {
 		indices[i] = i
 	}
-	tree := buildTreeNode(indices, features, targetCol, 0)
+
+	// Train in batches
+	batchSize := 1000
+	var tree *models.TreeNode
+	for i := 0; i < len(indices); i += batchSize {
+		end := i + batchSize
+		if end > len(indices) {
+			end = len(indices)
+		}
+		batchIndices := indices[i:end]
+
+		if tree == nil {
+			tree = buildTreeNode(batchIndices, features, targetCol, 0)
+		} 
+
+		// Save the model incrementally
+		if err := utils.SaveModel(tree); err != nil {
+			return nil, fmt.Errorf("failed to save model: %w", err)
+		}
+	}
+
 	fmt.Println("Tree building complete")
 	return tree, nil
 }
+
+
 
 func buildTreeNode(indices []int, features []string, targetCol string, depth int) *models.TreeNode {
 	// Create a leaf node if:
@@ -121,5 +143,4 @@ func buildTreeNode(indices []int, features []string, targetCol string, depth int
 		}
 	}
 	return node
-
 }
