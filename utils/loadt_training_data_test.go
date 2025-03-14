@@ -67,7 +67,6 @@ func TestLoadTrainingData(t *testing.T) {
 			}
 			tmpFile.Close()
 
-			// Store the filename in a variable first, then take its address
 			inputFileName := tmpFile.Name()
 			columnName := tt.columnPtr
 
@@ -75,15 +74,12 @@ func TestLoadTrainingData(t *testing.T) {
 			InputPtr = &inputFileName
 			ColumnPtr = &columnName
 
-			// Call the function under test
 			err = LoadTrainingData()
 
-			// Check for expected error
 			if (err != nil) != tt.expectedErr {
 				t.Errorf("expected error: %v, got: %v", tt.expectedErr, err)
 			}
 
-			// Check for expected target type
 			if !tt.expectedErr && models.TargetType != tt.expectedTarget {
 				t.Errorf("expected target type: %v, got: %v", tt.expectedTarget, models.TargetType)
 			}
