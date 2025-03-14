@@ -59,3 +59,29 @@ func MostCommonTarget(indices []int, targetCol string) interface{} {
 
 	return valueMap[maxKey]
 }
+
+func FindBestSplit(indices []int, features []string, targetCol string) models.SplitCriteria {
+	baseEntropy := CalculateEntropy(indices, targetCol)
+	bestSplit := models.SplitCriteria{
+		InfoGain:  -1,
+		GainRatio: -1,
+	}
+
+	// If entropy is 0, no need to split
+	if baseEntropy == 0 {
+		return bestSplit
+	}
+
+	for _, feature := range features {
+		if feature == targetCol {
+			continue
+		}
+
+		featureType := models.FeatureTypes[feature]
+		if featureType == "categorical" {
+		
+	}
+
+	return bestSplit
+}
+
