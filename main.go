@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"decision-tree/utils"
 )
@@ -38,4 +39,26 @@ func main() {
 		fmt.Println(err.Error())
 		return
 	}
+	if *utils.CommandPtr == "train" {
+		err = runTraining()
+	} else if *utils.CommandPtr == "predict" {
+		err = runPrediction()
+	}
+
+	if err != nil {
+		fmt.Printf("Error: %v\n", err)
+		os.Exit(1)
+	}
+}
+
+// runTraining handles the training workflow
+func runTraining() error {
+	fmt.Println("Starting training process...")
+	return nil
+}
+
+// runPrediction handles the prediction workflow
+func runPrediction() error {
+	fmt.Println("Starting prediction process...")
+	return nil
 }
