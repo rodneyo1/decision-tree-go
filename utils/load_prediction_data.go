@@ -18,7 +18,12 @@ func LoadPredictionData() error {
 
 	csvReader := csv.NewReader(csvFile)
 
+	csvReader.FieldsPerRecord = -1
+
 	columns, err := csvReader.Read()
+	if err == io.EOF {
+		return fmt.Errorf("input file is empty")
+	}
 	if err != nil {
 		return fmt.Errorf("failed to read header row: %w", err)
 	}
@@ -39,6 +44,13 @@ func LoadPredictionData() error {
 		for i, val := range row {
 			if i < len(columns) {
 				record[columns[i]] = parseValue(val)
+			}
+		}
+
+		// Fill in missing values with nil
+		for _, col := range columns {
+			if _, exists := record[col]; !exists {
+				record[col] = nil
 			}
 		}
 
