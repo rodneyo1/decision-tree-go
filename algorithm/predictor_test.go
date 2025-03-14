@@ -3,7 +3,7 @@ package algorithm
 import (
 	"testing"
 
-	"decision-tree/models"
+	"dt/models"
 )
 
 func TestEstimateNodeSize(t *testing.T) {
