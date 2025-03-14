@@ -27,3 +27,14 @@ func GetValueKey(val interface{}) string {
 	}
 	return fmt.Sprintf("%v", val)
 }
+
+type SplitCriteria struct {
+	Feature      string
+	SplitValue   interface{}
+	SplitType    string
+	InfoGain     float64
+	GainRatio    float64
+	SplitIndices map[string][]int // For categorical splits
+	LeftIndices  []int            // For numerical splits (<)
+	RightIndices []int            // For numerical splits (>=)
+}
