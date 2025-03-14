@@ -11,6 +11,7 @@ var (
 	FeatureTypes map[string]string
 	TargetValues map[interface{}]int
 	TargetType   string
+	TargetColumn string
 )
 
 type TreeNode struct {
