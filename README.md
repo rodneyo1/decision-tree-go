@@ -85,3 +85,11 @@ Run the tests using:
 go test ./...
 ```
 
+## Authors
+
+- Rodney Ochieng ([GitHub](https://github.com/rodneyo1))
+- Valeria Muhembele ([GitHub](https://github.com/anamivale))
+- Sheilla Juma ([GitHub](https://github.com/a-j-sheilla))
+- Moses Onyango ([GitHub](https://github.com/moseeh))
+- Thadeus Ogondola ([GitHub](https://github.com/TMassive42))
+
