@@ -27,6 +27,5 @@ func SaveModel(tree *models.TreeNode) error {
 		return fmt.Errorf("failed to encode model data: %w", err)
 	}
 
-	fmt.Println("Model saved successfully")
 	return nil
 }
