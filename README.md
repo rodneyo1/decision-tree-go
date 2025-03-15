@@ -88,6 +88,7 @@ make all TRAIN_DATA="datasets/large_dataset.csv" TARGET_COLUMN="target"
 - `TARGET_COLUMN`: Name of the target column
 - `MODEL_FILE`: Output path for model (default: model.dt)
 - `PREDICT_OUTPUT`: Output path for predictions (default: predictions.csv)
+- `PREDICT_DATA`: Path to dataset to predict
 
 ## Performance & Scalability
 
