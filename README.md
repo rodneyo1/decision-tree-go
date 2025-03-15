@@ -66,6 +66,51 @@ go build -o dt
 - The trained model is saved in **JSON format**.
 - The test dataset for predictions should have the **same feature columns** as the training dataset.
 
+## Using Makefile
+
+The project includes a Makefile for simplified build and execution:
+
+```sh
+make build    # Build the binary
+make train    # Train a new model
+make predict  # Run predictions
+make clean    # Clean generated files
+make all      # Run complete workflow (clean, build, train, predict)
+```
+
+**Example workflow:**
+```sh
+make all TRAIN_DATA="datasets/large_dataset.csv" TARGET_COLUMN="target"
+```
+
+**Available Make variables:**
+- `TRAIN_DATA`: Path to training dataset
+- `TARGET_COLUMN`: Name of the target column
+- `MODEL_FILE`: Output path for model (default: model.dt)
+- `PREDICT_OUTPUT`: Output path for predictions (default: predictions.csv)
+
+## Performance & Scalability
+
+### Memory Optimization
+- **Efficient Data Structures**: Uses optimized data structures to minimize memory overhead
+- **Streaming Processing**: Handles large datasets by processing rows in chunks
+- **Memory Pool**: Implements object pooling for frequently allocated structures
+
+### Performance Features
+- **Parallel Processing**: Utilizes goroutines for parallel node splitting and prediction
+
+### Missing Value Handling
+- **Detection**: Automatically detects and handles null/missing values
+- **Strategies**: Supports multiple imputation strategies:
+  - Mean/mode imputation for numerical features
+  - Most frequent value for categorical features
+  - Special split handling during tree construction
+
+### Optimization Flags
+```sh
+./dt -c train -i data.csv -t target -o model.dt 
+```
+
 ## Error Handling
 
 | Error | Cause | Fix |
