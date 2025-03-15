@@ -112,15 +112,6 @@ make all TRAIN_DATA="datasets/large_dataset.csv" TARGET_COLUMN="target"
 ./dt -c train -i data.csv -t target -o model.dt 
 ```
 
-## Error Handling
-
-| Error | Cause | Fix |
-|-------|-------|-----|
-| `Error: Missing input file` | Input CSV file is missing | Check the file path |
-| `Error: Target column not found` | The specified column is not in the dataset | Verify the CSV column names |
-| `Error: Model file not found` | The specified model file does not exist | Train a model first or check the file path |
-| `Error: Output path not specified` | No output file provided | Specify an output file path |
-
 ## Testing
 
 The project includes **unit tests** to validate correctness and performance.
