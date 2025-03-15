@@ -17,7 +17,7 @@ This project is an implementation of the **C4.5 Decision Tree** classifier in Go
 Ensure you have **Go 1.18+** installed. Then, clone the repository and build the executable:
 
 ```sh
-git clone https://github.com/a-j-sheilla/decision-tree-go.git
+git clone https://learn.zone01kisumu.ke/git/rodnochieng/decision-tree.git
 cd decision-tree-go
 go build -o dt
 ```
