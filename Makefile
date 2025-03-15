@@ -5,8 +5,8 @@ BINARY=dt
 TRAIN_DATA=datasets/loan_approval.csv
 MODEL_FILE=model.dt
 PREDICT_OUTPUT=predictions.csv
-TARGET_COLUMN=Self_Employed
-
+TARGET_COLUMN="Loan Approved"
+PREDICT_DATA = datasets/sample.csv
 build:
 	@echo "Building decision tree with go build."
 	@go build -o $(BINARY)
@@ -17,7 +17,7 @@ train: build
 
 predict: build
 	@echo "Making predictions..."
-	./$(BINARY) -c predict -i "$(TRAIN_DATA)" -m "$(MODEL_FILE)" -o $(PREDICT_OUTPUT)
+	./$(BINARY) -c predict -i "$(PREDICT_DATA)" -m "$(MODEL_FILE)" -o $(PREDICT_OUTPUT)
 
 clean:
 	@echo "Cleaning up files..."
