@@ -17,7 +17,7 @@ train: build
 
 predict: build
 	@echo "Making predictions..."
-	./$(BINARY) -c predict -i "$(TRAIN_DATA)" -m $(MODEL_FILE) -o $(PREDICT_OUTPUT)
+	./$(BINARY) -c predict -i "$(TRAIN_DATA)" -m "$(MODEL_FILE)" -o $(PREDICT_OUTPUT)
 
 clean:
 	@echo "Cleaning up files..."
