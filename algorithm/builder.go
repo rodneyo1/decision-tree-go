@@ -44,7 +44,7 @@ func BuildTree(targetCol string) (*models.TreeNode, error) {
 
 		if tree == nil {
 			tree = buildTreeNode(batchIndices, features, targetCol, 0)
-		} 
+		}
 
 		// Save the model incrementally
 		if err := utils.SaveModel(tree); err != nil {
@@ -55,8 +55,6 @@ func BuildTree(targetCol string) (*models.TreeNode, error) {
 	fmt.Println("Tree building complete")
 	return tree, nil
 }
-
-
 
 func buildTreeNode(indices []int, features []string, targetCol string, depth int) *models.TreeNode {
 	// Create a leaf node if:

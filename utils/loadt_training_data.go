@@ -52,10 +52,10 @@ func LoadTrainingData() error {
 	columnModes := make(map[int]string)
 	columnCounts := make(map[int]int)
 	columnValueCounts := make(map[int]map[string]int)
-	
+
 	// First pass: calculate means and modes for imputation
 	allRows := [][]string{}
-	
+
 	for {
 		row, err := csvReader.Read()
 		if err == io.EOF {
@@ -64,9 +64,9 @@ func LoadTrainingData() error {
 		if err != nil {
 			return fmt.Errorf("error reading row: %w", err)
 		}
-		
+
 		allRows = append(allRows, row)
-		
+
 		for i, value := range row {
 			if value == "" {
 				continue
@@ -89,7 +89,7 @@ func LoadTrainingData() error {
 			}
 		}
 	}
-	
+
 	// Calculate final means and modes
 	for i := range columnMeans {
 		if columnCounts[i] > 0 {
@@ -112,7 +112,7 @@ func LoadTrainingData() error {
 
 	for _, row := range allRows {
 		record := make(map[string]interface{})
-		
+
 		for i, val := range row {
 			// Impute missing values
 			if val == "" {
@@ -122,7 +122,7 @@ func LoadTrainingData() error {
 					val = mode
 				}
 			}
-			
+
 			parsedVal := parseValue(val)
 			record[columns[i]] = parsedVal
 
@@ -161,7 +161,7 @@ func LoadTrainingData() error {
 
 	// Determine target type
 	if models.FeatureTypes[*ColumnPtr] == "numeric" {
-		models.TargetType = "numeric" 
+		models.TargetType = "numeric"
 	} else {
 		models.TargetType = "categorical"
 	}
