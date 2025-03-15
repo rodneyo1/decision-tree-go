@@ -2,10 +2,10 @@
 
 # Variables
 BINARY=dt
-TRAIN_DATA=datasets/pixar_films new.csv
+TRAIN_DATA=datasets/loan_approval.csv
 MODEL_FILE=model.dt
 PREDICT_OUTPUT=predictions.csv
-TARGET_COLUMN=box_office_worldwide
+TARGET_COLUMN=Self_Employed
 
 build:
 	@echo "Building decision tree with go build."
