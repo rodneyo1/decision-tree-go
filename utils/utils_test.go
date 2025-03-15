@@ -1,12 +1,12 @@
 package utils
 
 import (
+	"dt/models"
 	"encoding/csv"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
-	"dt/models"
-	"io/ioutil"
 )
 
 func TestSavePredictions(t *testing.T) {
@@ -73,7 +73,6 @@ func TestSavePredictions(t *testing.T) {
 		})
 	}
 }
-
 
 func TestLoadTrainingData(t *testing.T) {
 	tests := []struct {
@@ -154,7 +153,6 @@ func TestLoadTrainingData(t *testing.T) {
 		})
 	}
 }
-
 
 func createTempCSV(content string) (string, error) {
 	tmpfile, err := ioutil.TempFile("", "testdata-*.csv")

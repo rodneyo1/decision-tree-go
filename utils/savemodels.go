@@ -1,8 +1,8 @@
 package utils
 
 import (
-	"encoding/json"
 	"dt/models"
+	"encoding/json"
 	"fmt"
 	"os"
 )
