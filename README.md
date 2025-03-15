@@ -1,157 +1,87 @@
-# Detailed Roadmap for Decision Tree Implementation
+# Fast & Scalable Decision Tree (C4.5) in Go
 
-Here's a comprehensive roadmap for implementing your decision tree project, from setting up command-line flags to final regression testing:
+## Overview
 
-## Phase 1: Project Setup and Framework
+This project is an implementation of the **C4.5 Decision Tree** classifier in Go. It is designed to be **high-performance**, **scalable**, and capable of handling **large datasets** with minimal memory overhead. The implementation supports **categorical and numerical attributes**, **missing value handling**, and **parallelization** for improved efficiency.
 
-### 1. Project Structure
-- Create the basic directory structure
-- Set up a Go module with `go mod init dt`
-- Create README.md with basic project information
+## Features
 
-### 2. Command Line Interface
-- Use the `flag` package or a library like `cobra` to implement command-line parsing
-- Implement the required flags:
-  ```go
-  trainCmd := flag.NewFlagSet("train", flag.ExitOnError)
-  trainInput := trainCmd.String("i", "", "Input training data file")
-  trainTarget := trainCmd.String("t", "", "Target column name")
-  trainOutput := trainCmd.String("o", "", "Output model file")
-  
-  predictCmd := flag.NewFlagSet("predict", flag.ExitOnError)
-  predictInput := predictCmd.String("i", "", "Input prediction data file")
-  predictModel := predictCmd.String("m", "", "Model file path")
-  predictOutput := predictCmd.String("o", "", "Output predictions file")
-  ```
-- Add validation for required arguments
-- Implement help messages and usage information
+- **Train & Predict**: CLI commands for training a decision tree and making predictions.
+- **Scalability**: Efficient handling of large datasets with optimized memory usage.
+- **Modular Design**: Well-structured code for easy maintainability and extension.
+- **Error Handling**: Clear error messages and validation for input/output files.
+- **JSON Model Serialization**: Stores trained models in a JSON format.
 
-## Phase 2: Data Handling
+## Installation
 
-### 3. CSV Handling
-- Implement CSV reading functionality with the `encoding/csv` package
-- Create data structures to hold the dataset
-- Handle different data types (numeric, categorical, dates, timestamps)
-- Implement type detection for columns
-- Create functions to load and validate data
+Ensure you have **Go 1.18+** installed. Then, clone the repository and build the executable:
 
-### 4. Data Preprocessing
-- Implement handling for missing values
-- Create functions to convert categorical features to numeric if needed
-- Implement feature scaling if necessary
-- Create utility functions for data manipulation
+```sh
+git clone https://github.com/a-j-sheilla/decision-tree-go.git
+cd decision-tree-go
+go build -o dt
+```
 
-## Phase 3: Core Decision Tree Algorithm
+## Usage
 
-### 5. Tree Node Structure
-- Define the tree node structure:
-  ```go
-  type TreeNode struct {
-      IsLeaf       bool
-      Prediction   interface{}
-      Feature      string
-      SplitValue   interface{}
-      Children     map[interface{}]*TreeNode // For categorical features
-      Left, Right  *TreeNode                 // For numerical features
-  }
-  ```
+### 1. Training a Decision Tree
 
-### 6. Information Gain Calculation
-- Implement entropy calculation
-- Implement information gain calculation
-- For C4.5, implement gain ratio calculation
+```sh
+./dt -c train -i <input_data_file.csv> -t <target_column> -o <output_tree.dt>
+```
 
-### 7. Tree Building Core
-- Implement the iterative tree-building algorithm (avoid recursion)
-- Create the best feature selection logic
-- Implement the splitting logic for both categorical and numerical features
-- Add termination conditions (homogeneous node, max depth, min samples)
+**Arguments:**
+- `-c train` → Specifies the training command.
+- `-i <input_data_file.csv>` → Path to the training dataset (CSV).
+- `-t <target_column>` → Column name containing target labels.
+- `-o <output_tree.dt>` → Path to save the trained model (JSON format).
 
-### 8. Tree Model Serialization
-- Implement JSON serialization for the tree model
-- Include metadata about features and their types
-- Ensure the model can be properly loaded back
+**Example:**
+```sh
+./dt -c train -i datasets/train.csv -t class -o model.dt
+```
 
-## Phase 4: Prediction and Evaluation
+### 2. Making Predictions
 
-### 9. Prediction Logic
-- Implement the tree traversal algorithm for making predictions
-- Handle missing values during prediction
-- Create batch prediction functionality
+```sh
+./dt -c predict -i <prediction_data_file.csv> -m <model_file.dt> -o <predictions.csv>
+```
 
-### 10. Output Generation
-- Implement CSV output for predictions
-- Format the output according to requirements
-- Add error handling for output operations
+**Arguments:**
+- `-c predict` → Specifies the prediction command.
+- `-i <prediction_data_file.csv>` → Path to the dataset for predictions.
+- `-m <model_file.dt>` → Path to the trained model file.
+- `-o <predictions.csv>` → Path to save predictions.
 
-## Phase 5: Performance Optimization
+**Example:**
+```sh
+./dt -c predict -i datasets/test.csv -m model.dt -o predictions.csv
+```
 
-### 11. Memory Optimization
-- Refine data structures to minimize memory usage
-- Implement indexing instead of data copying for splits
-- Add memory usage tracking (optional)
+## Input Requirements
 
-### 12. Speed Optimization
-- Profile your code to identify bottlenecks
-- Optimize critical functions
-- Implement parallelization using goroutines for tree building
-- Add concurrency for batch predictions
+- The dataset must be in **CSV format** with a header row.
+- Feature columns may include **categorical, numeric, date, or timestamp** values.
+- The **target column** must be specified during training.
+- The trained model is saved in **JSON format**.
+- The test dataset for predictions should have the **same feature columns** as the training dataset.
 
-## Phase 6: Testing and Validation
+## Error Handling
 
-### 13. Unit Testing
-- Write unit tests for all key components:
-  - Data loading
-  - Information gain calculation
-  - Feature splitting
-  - Tree building
-  - Prediction
+| Error | Cause | Fix |
+|-------|-------|-----|
+| `Error: Missing input file` | Input CSV file is missing | Check the file path |
+| `Error: Target column not found` | The specified column is not in the dataset | Verify the CSV column names |
+| `Error: Model file not found` | The specified model file does not exist | Train a model first or check the file path |
+| `Error: Output path not specified` | No output file provided | Specify an output file path |
 
-### 14. Integration Testing
-- Test the end-to-end flow from training to prediction
-- Test with different types of datasets
-- Test with edge cases (empty datasets, single-feature datasets)
+## Testing
 
-### 15. Regression Testing
-- Create a test suite with known datasets and expected outputs
-- Implement automated regression tests
-- Track performance metrics across code changes
+The project includes **unit tests** to validate correctness and performance.
 
-## Phase 7: Finalization
+Run the tests using:
 
-### 16. Documentation
-- Update README with detailed usage instructions
-- Document the algorithm implementation
-- Add examples and benchmarks
+```sh
+go test ./...
+```
 
-### 17. Video Presentation
-- Prepare a ~3 minute video explaining:
-  - Your implementation approach
-  - Key design decisions
-  - Performance optimizations
-  - Challenges and solutions
-
-### 18. Final Review and Cleanup
-- Code cleanup and final refactoring
-- Ensure consistent error handling
-- Remove debug code and unused functions
-- Final pass on documentation
-
-## Implementation Timeline
-
-For effective project management, consider this recommended timeline:
-
-1. **Week 1:** Setup, CLI, and data handling (Phases 1-2)
-2. **Week 2:** Core algorithm implementation (Phase 3)
-3. **Week 3:** Prediction and optimization (Phases 4-5)
-4. **Week 4:** Testing, documentation, and presentation (Phases 6-7)
-
-## Key Milestones
-
-- **Milestone 1:** Working CLI with data loading functionality
-- **Milestone 2:** Basic decision tree implementation that builds a model
-- **Milestone 3:** Complete prediction functionality
-- **Milestone 4:** Optimized implementation with parallelization
-- **Milestone 5:** Comprehensive test suite with documentation
-
-This roadmap provides a structured approach to implementing your decision tree project, ensuring you cover all the requirements while building in a methodical way that prevents issues like stack overflows and performance problems.
