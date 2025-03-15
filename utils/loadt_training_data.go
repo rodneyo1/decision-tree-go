@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"io"
+	"math"
 	"os"
 	"slices"
 	"strconv"
@@ -116,7 +117,7 @@ func LoadTrainingData() error {
 			// Impute missing values
 			if val == "" {
 				if mean, exists := columnMeans[i]; exists {
-					val = fmt.Sprintf("%f", mean)
+					val = fmt.Sprintf("%d", int(math.Round(mean)))
 				} else if mode, exists := columnModes[i]; exists {
 					val = mode
 				}
